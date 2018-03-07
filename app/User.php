@@ -7,6 +7,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     /**
+     * Genarate api token
+     */
+    public function generateToken()
+    {
+        $this->api_token = str_random(60);
+        $this->save();
+
+        return $this->api_token;
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
