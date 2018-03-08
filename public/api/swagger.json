@@ -1,0 +1,63 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "REST API Sample",
+        "description": "Laravel 5.2 Rest Api.",
+        "termsOfService": "",
+        "contact": {
+            "email": "efimov82@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "rest-api.efimov.life",
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/articles": {
+            "get": {
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Display a listing of the Articles.",
+                "description": "Returns listing of articles.",
+                "operationId": "api.dashboard.index",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview."
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    }
+                }
+            }
+        },
+        "/articles/{id}": {
+            "get": {
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Detail of the Article.",
+                "description": "Returns detail of article.",
+                "operationId": "api.dashboard.index",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview."
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}
