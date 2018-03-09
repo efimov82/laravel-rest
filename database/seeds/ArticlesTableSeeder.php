@@ -2,7 +2,7 @@
 //namespace database\seeds;
 
 use Illuminate\Database\Seeder;
-use App\Article;
+use App\Models\Article;
 
 class ArticlesTableSeeder extends Seeder
 {
