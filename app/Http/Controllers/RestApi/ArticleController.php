@@ -59,6 +59,12 @@ class ArticleController extends Controller
      *     description="Returns detail of article.",
      *     produces={"application/json"},
      *     tags={"articles"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Article id",
+     *         required=true,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="Get Detail of the Article."
@@ -100,6 +106,35 @@ class ArticleController extends Controller
         return response()->json($article, 201);
     }
 
+    /**
+     * Update exist Article.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @SWG\Put(
+     *     path="/articles/{id}",
+     *     description="Update article.",
+     *     tags={"articles"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Article id",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="article",
+     *         in="body",
+     *         description="Article to add to the store",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/Article")
+     *     ),
+     *     @SWG\Response(
+     *         response=201,
+     *         description="Article update successful",
+     *         @SWG\Schema(ref="#/definitions/Article")
+     *     )
+     * )
+     */
     public function update(Request $request, Article $article)
     {
         $article->update($request->all());
@@ -107,6 +142,27 @@ class ArticleController extends Controller
         return response()->json($article, 200);
     }
 
+    /**
+     * Delete Article.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @SWG\Delete(
+     *     path="/articles/{id}",
+     *     description="Delete article.",
+     *     tags={"articles"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Article id",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=204,
+     *         description="Article deleted"
+     *     )
+     * )
+     */
     public function delete(Article $article)
     {
         $article->delete();
