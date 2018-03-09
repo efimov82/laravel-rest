@@ -8,7 +8,10 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "darkaonline/l5-swagger": "~3.0",
-        "zircote/swagger-php": "^2.0"
+        "zircote/swagger-php": "^2.0",
+        "laravel-doctrine/orm": "1.1.*",
+        "laravel-doctrine/migrations": "^1.1",
+        "reliese/laravel": "^0.0.13"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

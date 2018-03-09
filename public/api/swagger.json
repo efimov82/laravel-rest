@@ -1,15 +1,14 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "REST API Sample",
+        "title": "Articles Api",
         "description": "Laravel 5.2 Rest Api.",
-        "termsOfService": "",
         "contact": {
             "email": "efimov82@gmail.com"
         },
         "version": "1.0.0"
     },
-    "host": "rest-api.efimov.life",
+    "host": "localhost:8000",
     "basePath": "/",
     "schemes": [
         "http",
@@ -19,7 +18,7 @@
         "/articles": {
             "get": {
                 "tags": [
-                    "dashboard"
+                    "articles"
                 ],
                 "summary": "Display a listing of the Articles.",
                 "description": "Returns listing of articles.",
@@ -29,10 +28,33 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Dashboard overview."
-                    },
-                    "401": {
-                        "description": "Unauthorized action."
+                        "description": "Articles list."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Add new Article.",
+                "description": "Add new article.",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "body",
+                        "description": "Article to add to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Article"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Article created successful",
+                        "schema": {
+                            "$ref": "#/definitions/Article"
+                        }
                     }
                 }
             }
@@ -40,24 +62,39 @@
         "/articles/{id}": {
             "get": {
                 "tags": [
-                    "dashboard"
+                    "articles"
                 ],
                 "summary": "Detail of the Article.",
                 "description": "Returns detail of article.",
-                "operationId": "api.dashboard.index",
                 "produces": [
                     "application/json"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Dashboard overview."
-                    },
-                    "401": {
-                        "description": "Unauthorized action."
+                        "description": "Get Detail of the Article."
                     }
                 }
             }
         }
     },
-    "definitions": {}
+    "definitions": {
+        "Article": {
+            "required": [
+                "title",
+                "body"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "Article"
+            }
+        }
+    }
 }

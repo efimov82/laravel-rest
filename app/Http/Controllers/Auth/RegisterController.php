@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
-    use Illuminate\Foundation\Auth\RegistersUsers;
+    use \Illuminate\Foundation\Auth\RegistersUsers;
 
     public function register(Request $request)
     {
@@ -16,7 +16,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         // A Registered event is created and will trigger any relevant
-        // observers, such as sending a confirmation email or any 
+        // observers, such as sending a confirmation email or any
         // code that needs to be run as soon as the user is created.
         event(new Registered($user = $this->create($request->all())));
 

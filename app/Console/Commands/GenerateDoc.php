@@ -37,6 +37,6 @@ class GenerateDoc extends Command
      */
     public function handle()
     {
-        return exec('./vendor/bin/swagger -o ./public/api/swagger.json ./app/');
+        return exec('./vendor/bin/swagger --bootstrap config/constants.php -o ./public/api/swagger.json ./app/');
     }
 }

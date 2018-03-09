@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Article;
+use App\Models\Article;
 
 /**
+ * rest-api.efimov.life
+ *
  * @SWG\Swagger(
  *     schemes={"http","https"},
- *     host="rest-api.efimov.life",
+ *     host=API_HOST,
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
- *         title="REST API Sample",
+ *         title="Articles Api",
  *         description="Laravel 5.2 Rest Api.",
- *         termsOfService="",
  *         @SWG\Contact(
  *             email="efimov82@gmail.com"
  *         )
@@ -36,14 +37,10 @@ class ArticleController extends Controller
      *     description="Returns listing of articles.",
      *     operationId="api.dashboard.index",
      *     produces={"application/json"},
-     *     tags={"dashboard"},
+     *     tags={"articles"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Dashboard overview."
-     *     ),
-     *     @SWG\Response(
-     *         response=401,
-     *         description="Unauthorized action.",
+     *         description="Articles list."
      *     )
      * )
      */
@@ -60,16 +57,11 @@ class ArticleController extends Controller
      * @SWG\Get(
      *     path="/articles/{id}",
      *     description="Returns detail of article.",
-     *     operationId="api.dashboard.index",
      *     produces={"application/json"},
-     *     tags={"dashboard"},
+     *     tags={"articles"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Dashboard overview."
-     *     ),
-     *     @SWG\Response(
-     *         response=401,
-     *         description="Unauthorized action.",
+     *         description="Get Detail of the Article."
      *     )
      * )
      */
@@ -78,7 +70,30 @@ class ArticleController extends Controller
         return $article;
     }
 
-    public function save(Request $request)
+    /**
+     * Add new Article.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @SWG\Post(
+     *     path="/articles",
+     *     description="Add new article.",
+     *     tags={"articles"},
+     *     @SWG\Parameter(
+     *         name="article",
+     *         in="body",
+     *         description="Article to add to the store",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/Article")
+     *     ),
+     *     @SWG\Response(
+     *         response=201,
+     *         description="Article created successful",
+     *         @SWG\Schema(ref="#/definitions/Article")
+     *     )
+     * )
+     */
+    public function add(Request $request)
     {
         $article = Article::create($request->all());
 

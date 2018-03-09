@@ -147,7 +147,13 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+
+        /*
+         * Project additional Provaders
+         */
         L5Swagger\L5SwaggerServiceProvider::class,
+        LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+        Reliese\Coders\CodersServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -202,6 +208,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // Doctrine FAcades
+        'EntityManager' => LaravelDoctrine\ORM\Facades\EntityManager::class,
+        'Registry'      => LaravelDoctrine\ORM\Facades\Registry::class,
+        'Doctrine'      => LaravelDoctrine\ORM\Facades\Doctrine::class,
 
     ],
 
