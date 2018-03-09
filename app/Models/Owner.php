@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @SWG\Definition(required={"title", "body"}, type="object", @SWG\Xml(name="Article"))
+ * @SWG\Definition(required={"full_name", "email"}, type="object", @SWG\Xml(name="Owner"))
  */
-class Article extends Model
+class Owner extends Model
 {
-    /**
+  /**
      * @var integer
      * @SWG\Property()
      */
@@ -19,13 +19,19 @@ class Article extends Model
      * @var string
      * @SWG\Property()
      */
-    public $title;
+    public $full_name;
 
     /**
      * @var string
      * @SWG\Property()
      */
-    public $body;
+    public $email;
+
+    /**
+     * @var string
+     * @SWG\Property()
+     */
+    public $slug;
 
     /**
      * @var DateTime
@@ -39,5 +45,5 @@ class Article extends Model
      */
     public $updated_at;
 
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['full_name', 'email'];
 }

@@ -9,8 +9,6 @@ use App\Http\Requests;
 use App\Models\Article;
 
 /**
- * rest-api.efimov.life
- *
  * @SWG\Swagger(
  *     schemes={"http","https"},
  *     host=API_HOST,
@@ -40,7 +38,8 @@ class ArticleController extends Controller
      *     tags={"articles"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Articles list."
+     *         description="Articles list.",
+     *         @SWG\Schema(ref="#/definitions/Article")
      *     )
      * )
      */
@@ -61,13 +60,15 @@ class ArticleController extends Controller
      *     tags={"articles"},
      *     @SWG\Parameter(
      *         name="id",
+     *         type="integer",
      *         in="path",
      *         description="Article id",
      *         required=true,
      *     ),
      *     @SWG\Response(
      *         response=200,
-     *         description="Get Detail of the Article."
+     *         description="Get Detail of the Article.",
+     *         @SWG\Schema(ref="#/definitions/Article")
      *     )
      * )
      */
@@ -117,6 +118,7 @@ class ArticleController extends Controller
      *     tags={"articles"},
      *     @SWG\Parameter(
      *         name="id",
+     *         type="integer",
      *         in="path",
      *         description="Article id",
      *         required=true,
@@ -153,6 +155,7 @@ class ArticleController extends Controller
      *     tags={"articles"},
      *     @SWG\Parameter(
      *         name="id",
+     *         type="integer",
      *         in="path",
      *         description="Article id",
      *         required=true,
