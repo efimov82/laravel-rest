@@ -15,5 +15,5 @@ class Owner extends Model
 {
     protected $fillable = ['full_name', 'email'];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'api_token'];
 }

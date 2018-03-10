@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(required={"title", "owner_id"}, type="object", @SWG\Xml(name="Video"))
@@ -18,6 +19,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Video extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+    protected $fillable = ['title', 'description', 'filename'];
+    protected $hidden = ['updated_at', 'deleted_at'];
+
     /**
      * Doesn't working with any value
      * Use AppServiceProvider event
@@ -34,8 +41,4 @@ class Video extends Model
     {
         return $this->belongsTo('App\Models\Owner');
     }
-
-    protected $fillable = ['title', 'owner_id', 'status', 'description', 'filename', 'slug'];
-
-    protected $hidden = ['updated_at', 'deleted_at'];
 }

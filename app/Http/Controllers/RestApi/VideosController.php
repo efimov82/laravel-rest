@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Video;
+use App\Models\Owner;
 
 class VideosController extends Controller
 {
@@ -20,6 +21,12 @@ class VideosController extends Controller
      *     description="Returns listing of videos.",
      *     produces={"application/json"},
      *     tags={"videos"},
+     *     @SWG\Parameter(
+     *         name="token",
+     *         type="string",
+     *         in="query",
+     *         description="auth token"
+     *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         type="integer",
@@ -40,10 +47,10 @@ class VideosController extends Controller
      */
     public function index(Request $request)
     {
-      $limit = $request->get('limit', 10);
-      $offset = $request->get('offset', 0);
+        $limit = $request->get('limit', 10);
+        $offset = $request->get('offset', 0);
 
-      return Video::with('Owner')->skip($offset)->take($limit)->get();//->limit($limit)->offset($offset);
+        return Video::with('Owner')->skip($offset)->take($limit)->get();
     }
 
     /**
@@ -56,6 +63,12 @@ class VideosController extends Controller
      *     description="Returns detail of video.",
      *     produces={"application/json"},
      *     tags={"videos"},
+     *     @SWG\Parameter(
+     *         name="token",
+     *         type="string",
+     *         in="query",
+     *         description="auth token"
+     *     ),
      *     @SWG\Parameter(
      *         name="id",
      *         type="integer",
@@ -76,18 +89,20 @@ class VideosController extends Controller
      */
     public function details($id)
     {
-      return Video::with('Owner')->findOrFail($id);
+        return Video::with('Owner')->findOrFail($id);
     }
 
     /**
-     * Add new Video.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Post(
      *     path="/videos",
      *     description="Add new video.",
      *     tags={"video"},
+     *     @SWG\Parameter(
+     *         name="token",
+     *         type="string",
+     *         in="query",
+     *         description="auth token"
+     *     ),
      *     @SWG\Parameter(
      *         name="video",
      *         in="body",
@@ -101,18 +116,55 @@ class VideosController extends Controller
      *         @SWG\Schema(ref="#/definitions/Video")
      *     )
      * )
+     * @return \Illuminate\Http\JsonResponse
      */
     public function add(Request $request)
     {
-      $data = $request->all();
-      $video = new Video($data);
-      $video->save();
+        $data = $request->all();
+        $owner = Owner::where('api_token', $request->get('token'))->first();
 
-      return response()->json($video, 201);
+        $video = new Video($data);
+
+        $video->owner_id = $owner->id;
+        // TODO replace to Enum state
+        $video->status = 1;
+
+        $video->save();
+
+        return response()->json($video, 201);
     }
 
+    /**
+     * @SWG\Put(
+     *     path="/videos/{id}",
+     *     description="Update video.",
+     *     tags={"video"},
+     *     @SWG\Parameter(
+     *         name="token",
+     *         type="string",
+     *         in="query",
+     *         description="auth token"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="video",
+     *         in="body",
+     *         description="Video to add to the store",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/Video")
+     *     ),
+     *     @SWG\Response(
+     *         response=204,
+     *         description="Video updated"
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, Video $video)
     {
+        if (!$this->checkRightsOwnerVideo($request, $video)) {
+            return response()->json('Forbiden.', 403);
+        }
+
         $video->update($request->all());
 
         return response()->json($video, 200);
@@ -128,6 +180,12 @@ class VideosController extends Controller
      *     description="Delete video.",
      *     tags={"video"},
      *     @SWG\Parameter(
+     *         name="token",
+     *         type="string",
+     *         in="query",
+     *         description="auth token"
+     *     ),
+     *     @SWG\Parameter(
      *         name="id",
      *         type="integer",
      *         in="path",
@@ -137,13 +195,35 @@ class VideosController extends Controller
      *     @SWG\Response(
      *         response=204,
      *         description="Video deleted"
+     *     ),
+     *     @SWG\Response(
+     *         response=403,
+     *         description="Forbiden"
      *     )
      * )
      */
-    public function delete(Video $video)
+    public function delete(Request $request, Video $video)
     {
+        if (!$this->checkRightsOwnerVideo($request, $video)) {
+            return response()->json('Forbiden.', 403);
+        }
+
         $video->delete();
 
         return response()->json(null, 204);
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @param Video $video
+     * @return boolean
+     */
+    protected function checkRightsOwnerVideo(Request $request, Video $video)
+    {
+        $token = $request->get('token');
+        $owner = Owner::where('api_token', $token)->first();
+
+        return ($owner->id == $video->owner_id);
     }
 }
