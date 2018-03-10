@@ -67,12 +67,16 @@ class VideosController extends Controller
      *         response=200,
      *         description="Get Detail of the Video.",
      *         @SWG\Schema(ref="#/definitions/Video")
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Video not found."
      *     )
      * )
      */
     public function details($id)
     {
-      return Video::with('Owner')->find($id);
+      return Video::with('Owner')->findOrFail($id);
     }
 
     /**

@@ -69,6 +69,10 @@ class ArticleController extends Controller
      *         response=200,
      *         description="Get Detail of the Article.",
      *         @SWG\Schema(ref="#/definitions/Article")
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Article not found."
      *     )
      * )
      */
