@@ -6,55 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @SWG\Definition(required={"title", "owner_id"}, type="object", @SWG\Xml(name="Video"))
+ *
+ * @SWG\Property(property="id",         type="integer",   description="Unique identifier for the Video", format="int64")
+ * @SWG\Property(property="title",      type="string",    description="Title of the video")
+ * @SWG\Property(property="slug",       type="string",    description="Slug of the video")
+ * @SWG\Property(property="filename",   type="string",    description="Filename of the video")
+ * @SWG\Property(property="owner_id",   type="integer",   description="Owner ID of the video")
+ * @SWG\Property(property="owner",      ref="#/definitions/Owner",   description="Owner of the video")
+ * @SWG\Property(property="created_at", type="string", format="YYYY-mm-dd HH:mm:ss", readOnly=true,  description="Datetime create of the article")
+ * @SWG\Property(property="status",     description="Encoding status",  enum={"new", "available", "process", "unavailable"})
  */
 class Video extends Model
 {
     /**
-     * @var integer
-     * @SWG\Property()
+     * Doesn't working with any value
+     * Use AppServiceProvider event
+     *
+     * @var bool
      */
-    public $id;
+    //public $timestamps = true;
 
     /**
-     * @var string
-     * @SWG\Property()
+     *
+     * @return App\Models\Owner
      */
-    public $title;
-
-    /**
-     * @var string
-     * @SWG\Property()
-     */
-    public $slug;
-
-    /**
-     * @var string
-     * @SWG\Property(enum={"available", "pending", "sold"})
-     */
-    public $status;
-
-    /**
-     * @var DateTime
-     * @SWG\Property()
-     */
-    public $created_at;
-
-    /**
-     * @var DateTime
-     * @SWG\Property()
-     */
-    public $updated_at;
-
-    /**
-     * @var Owner
-     * @SWG\Property()
-     */
-    public $owner;
-
     public function owner()
     {
         return $this->belongsTo('App\Models\Owner');
     }
 
-    protected $fillable = ['title', 'owner_id', 'status', 'description', 'filename'];
+    protected $fillable = ['title', 'owner_id', 'status', 'description', 'filename', 'slug'];
+
+    protected $hidden = ['updated_at', 'deleted_at'];
 }

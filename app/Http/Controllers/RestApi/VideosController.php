@@ -70,9 +70,9 @@ class VideosController extends Controller
      *     )
      * )
      */
-    public function details(Video $video)
+    public function details($id)
     {
-      return $video->owner;
+      return Video::with('Owner')->find($id);
     }
 
     /**
@@ -100,7 +100,9 @@ class VideosController extends Controller
      */
     public function add(Request $request)
     {
-      $video = Video::create($request->all());
+      $data = $request->all();
+      $video = new Video($data);
+      $video->save();
 
       return response()->json($video, 201);
     }
