@@ -15,12 +15,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
          Video::creating(function ($video) {
-           if (!$video->slug) {
-              $video->slug = strtoupper(substr(uniqid('', true), 2, 8));
-           }
 
-           $video->created_at = date('Y-m-d H:i:s');
-           $video->updated_at = date('Y-m-d H:i:s');
+
+           //$video->created_at = date('Y-m-d H:i:s');
+           //$video->updated_at = date('Y-m-d H:i:s');
         });
     }
 

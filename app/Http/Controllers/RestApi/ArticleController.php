@@ -15,7 +15,7 @@ use App\Models\Article;
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
- *         title="Articles Api",
+ *         title="Laravel RestApi",
  *         description="Laravel 5.2 Rest Api.",
  *         @SWG\Contact(
  *             email="efimov82@gmail.com"
@@ -26,22 +26,20 @@ use App\Models\Article;
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the Articles.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Get(
      *     path="/articles",
      *     description="Returns listing of articles.",
-     *     operationId="api.dashboard.index",
      *     produces={"application/json"},
      *     tags={"articles"},
      *     @SWG\Response(
      *         response=200,
      *         description="Articles list.",
-     *         @SWG\Schema(ref="#/definitions/Article")
+     *         @SWG\Property(type="array",
+     *              @SWG\Items(ref="#/definitions/Article")
+     *         )
      *     )
      * )
+     * @return Article[]
      */
     public function index()
     {
@@ -49,10 +47,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Detail of the Article.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Get(
      *     path="/articles/{id}",
      *     description="Returns detail of article.",
@@ -75,6 +69,7 @@ class ArticleController extends Controller
      *         description="Article not found."
      *     )
      * )
+     * @return Article
      */
     public function details(Article $article)
     {
@@ -82,10 +77,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Add new Article.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Post(
      *     path="/articles",
      *     description="Add new article.",
@@ -93,7 +84,7 @@ class ArticleController extends Controller
      *     @SWG\Parameter(
      *         name="article",
      *         in="body",
-     *         description="Article to add to the store",
+     *         description="New Article to add to the store",
      *         required=true,
      *         @SWG\Schema(ref="#/definitions/Article")
      *     ),
@@ -103,6 +94,7 @@ class ArticleController extends Controller
      *         @SWG\Schema(ref="#/definitions/Article")
      *     )
      * )
+     * @return \Illuminate\Http\JsonResponse Article
      */
     public function add(Request $request)
     {
@@ -112,10 +104,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update exist Article.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Put(
      *     path="/articles/{id}",
      *     description="Update article.",
@@ -130,7 +118,7 @@ class ArticleController extends Controller
      *     @SWG\Parameter(
      *         name="article",
      *         in="body",
-     *         description="Article to add to the store",
+     *         description="Article to update",
      *         required=true,
      *         @SWG\Schema(ref="#/definitions/Article")
      *     ),
@@ -140,6 +128,7 @@ class ArticleController extends Controller
      *         @SWG\Schema(ref="#/definitions/Article")
      *     )
      * )
+     * @return \Illuminate\Http\JsonResponse Article
      */
     public function update(Request $request, Article $article)
     {
@@ -149,10 +138,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Delete Article.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Delete(
      *     path="/articles/{id}",
      *     description="Delete article.",
@@ -169,6 +154,7 @@ class ArticleController extends Controller
      *         description="Article deleted"
      *     )
      * )
+     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Article $article)
     {

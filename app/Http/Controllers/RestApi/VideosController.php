@@ -8,14 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Video;
 use App\Models\Owner;
+use App\Enums\VideoStatus;
 
 class VideosController extends Controller
 {
     /**
-     * Display a listing of the Videos.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
      * @SWG\Get(
      *     path="/videos",
      *     description="Returns listing of videos.",
@@ -41,9 +38,13 @@ class VideosController extends Controller
      *     ),
      *     @SWG\Response(
      *         response=200,
-     *         description="Videos list."
+     *         description="Returns listing of videos.",
+     *         @SWG\Property(type="array",
+     *              @SWG\Items(ref="#/definitions/Video")
+     *         )
      *     )
      * )
+     * @return Videos[]
      */
     public function index(Request $request)
     {
@@ -116,7 +117,7 @@ class VideosController extends Controller
      *         @SWG\Schema(ref="#/definitions/Video")
      *     )
      * )
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse Video
      */
     public function add(Request $request)
     {
@@ -126,8 +127,8 @@ class VideosController extends Controller
         $video = new Video($data);
 
         $video->owner_id = $owner->id;
-        // TODO replace to Enum state
-        $video->status = 1;
+        $video->slug = strtoupper(substr(uniqid('', true), 2, 8));
+        $video->status = VideoStatus::ST_NEw;
 
         $video->save();
 
@@ -146,6 +147,12 @@ class VideosController extends Controller
      *         description="auth token"
      *     ),
      *     @SWG\Parameter(
+     *         name="id",
+     *         type="string",
+     *         in="path",
+     *         description="Video ID"
+     *     ),
+     *     @SWG\Parameter(
      *         name="video",
      *         in="body",
      *         description="Video to add to the store",
@@ -159,13 +166,17 @@ class VideosController extends Controller
      * )
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Video $video)
+    public function update(Request $request, $id)
     {
+        $video = Video::with('Owner')->findOrFail($id);
+
         if (!$this->checkRightsOwnerVideo($request, $video)) {
             return response()->json('Forbiden.', 403);
         }
 
-        $video->update($request->all());
+        $data = $request->all();
+        $data['status'] = $this->getStatusValue($data);
+        $video->update($data);
 
         return response()->json($video, 200);
     }
@@ -225,5 +236,14 @@ class VideosController extends Controller
         $owner = Owner::where('api_token', $token)->first();
 
         return ($owner->id == $video->owner_id);
+    }
+
+    protected function getStatusValue($data)
+    {
+        if (isset($data['status'])) {
+            return VideoStatus::getValue($data['status']);
+        } else {
+            return VideoStatus::getValue('');
+        }
     }
 }

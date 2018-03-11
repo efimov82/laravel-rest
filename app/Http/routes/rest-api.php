@@ -20,7 +20,7 @@ Route::group(['prefix' => 'rest-api/v1/videos', 'middleware' => 'rest_token'], f
   Route::get('/',                'RestApi\VideosController@index');
   Route::get('/{id}',           'RestApi\VideosController@details');
   Route::post('/',               'RestApi\VideosController@add');
-  Route::put('/{video}',        'RestApi\VideosController@update');
+  Route::put('/{id}',        'RestApi\VideosController@update');
   Route::delete('/{video}',     'RestApi\VideosController@delete');
 });
 
