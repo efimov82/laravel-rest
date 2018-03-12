@@ -9,9 +9,9 @@ Route::group(['prefix' => 'rest-api/v1'], function () {
   Route::put('articles/{article}',    'RestApi\ArticleController@update');
   Route::delete('articles/{article}', 'RestApi\ArticleController@delete');
   // Token
-  Route::delete('token/request',      'RestApi\TokeneController@request');
-  Route::delete('token/refresh',      'RestApi\TokeneController@refresh');
-  Route::delete('token/delete',      'RestApi\TokeneController@delete');
+  Route::delete('token/request',      'RestApi\TokenController@request');
+  Route::delete('token/refresh',      'RestApi\TokenController@refresh');
+  Route::delete('token/delete',      'RestApi\TokenController@delete');
 });
 
 
