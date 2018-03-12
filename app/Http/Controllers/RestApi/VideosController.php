@@ -213,8 +213,10 @@ class VideosController extends Controller
      *     )
      * )
      */
-    public function delete(Request $request, Video $video)
+    public function delete(Request $request, $id)
     {
+        $video = Video::with('Owner')->findOrFail($id);
+        
         if (!$this->checkRightsOwnerVideo($request, $video)) {
             return response()->json('Forbiden.', 403);
         }

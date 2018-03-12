@@ -18,10 +18,10 @@ Route::group(['prefix' => 'rest-api/v1'], function () {
 Route::group(['prefix' => 'rest-api/v1/videos', 'middleware' => 'rest_token'], function () {
   //Videos
   Route::get('/',                'RestApi\VideosController@index');
-  Route::get('/{id}',           'RestApi\VideosController@details');
+  Route::get('/{id}',           'RestApi\VideosController@details')->where('id', '\d+');
   Route::post('/',               'RestApi\VideosController@add');
-  Route::put('/{id}',        'RestApi\VideosController@update');
-  Route::delete('/{video}',     'RestApi\VideosController@delete');
+  Route::put('/{id}',        'RestApi\VideosController@update')->where('id', '\d+');
+  Route::delete('/{id}',     'RestApi\VideosController@delete')->where('id', '\d+');
 });
 
 // Users
